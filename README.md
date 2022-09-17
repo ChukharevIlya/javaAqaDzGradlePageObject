@@ -1,0 +1,1 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/8lwrgryyree3vvbm?svg=true)](https://ci.appveyor.com/project/ChukharevIlya/javaaqadzgradlepageobject)
