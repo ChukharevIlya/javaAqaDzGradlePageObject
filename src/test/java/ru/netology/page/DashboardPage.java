@@ -16,16 +16,16 @@ public class DashboardPage {
   private SelenideElement refillSecondCardButton = $x("//*[@data-test-id=\"0f3f5c2a-249e-4c3d-8287-09f7a039391d\"]//span[text()=\"Пополнить\"]");
   private SelenideElement updateButton = $x("//*[@data-test-id=\"action-reload\"]//span[@class=\"button__text\"]");
 
-  public SelenideElement getRefillFirstCardButton() {
-    return refillFirstCardButton;
+  public void getRefillFirstCardButton() {
+    refillFirstCardButton.click();
   }
 
-  public SelenideElement getRefillSecondCardButton() {
-    return refillSecondCardButton;
+  public void getRefillSecondCardButton() {
+    refillSecondCardButton.click();
   }
 
-  public SelenideElement getUpdateButton() {
-    return updateButton;
+  public void getUpdateButton() {
+    updateButton.click();
   }
 
   private ElementsCollection cards = $$(".list__item div");

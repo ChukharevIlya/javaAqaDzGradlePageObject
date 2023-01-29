@@ -16,8 +16,6 @@ import static com.codeborne.selenide.Selenide.page;
 
 class MoneyTransferTest {
 
-  private MoneyTransferPage moneyTransferPage = new MoneyTransferPage();
-
   @BeforeEach
   void setup() {
     Configuration.holdBrowserOpen = true;
@@ -29,6 +27,8 @@ class MoneyTransferTest {
     verificationPage.validVerify(verificationCode);
   }
 
+  private MoneyTransferPage moneyTransferPage = new MoneyTransferPage();
+
   @Test
   void shouldTransferMoneyFromSecondCard() {
     int transferAmount = 10_000;
@@ -37,12 +37,11 @@ class MoneyTransferTest {
     var dashboardPage = new DashboardPage();
     int originalFirstCardBalance = dashboardPage.getCardBalance("1");
     int originalSecondCardBalance = dashboardPage.getCardBalance("2");
-    dashboardPage.getRefillFirstCardButton().click();
+
+    dashboardPage.getRefillFirstCardButton();
     moneyTransferPage.transfer(DataHelper.getCardInfo("2"), stringTransferAmount);
-    dashboardPage.getRefillSecondCardButton().click();
-    moneyTransferPage.transfer(DataHelper.getCardInfo("1"), stringTransferAmount);
-    int actualFirstCardBalance = dashboardPage.getCardBalance("1");
-    int actualSecondCardBalance = dashboardPage.getCardBalance("2");
+    int actualFirstCardBalance = dashboardPage.getCardBalance("1") - transferAmount;
+    int actualSecondCardBalance = dashboardPage.getCardBalance("2") + transferAmount;
 
     Assertions.assertEquals(originalFirstCardBalance, actualFirstCardBalance);
     Assertions.assertEquals(originalSecondCardBalance, actualSecondCardBalance);
@@ -50,18 +49,17 @@ class MoneyTransferTest {
 
   @Test
   void shouldTransferMoneyFromFirstCard() {
-    int transferAmount = 10_000;
+    int transferAmount = 20_000;
     String stringTransferAmount = String.valueOf(transferAmount);
     var moneyTransferPage = new MoneyTransferPage();
     var dashboardPage = new DashboardPage();
     int originalFirstCardBalance = dashboardPage.getCardBalance("1");
     int originalSecondCardBalance = dashboardPage.getCardBalance("2");
-    dashboardPage.getRefillSecondCardButton().click();
+
+    dashboardPage.getRefillSecondCardButton();
     moneyTransferPage.transfer(DataHelper.getCardInfo("1"), stringTransferAmount);
-    dashboardPage.getRefillFirstCardButton().click();
-    moneyTransferPage.transfer(DataHelper.getCardInfo("2"), stringTransferAmount);
-    int actualFirstCardBalance = dashboardPage.getCardBalance("1");
-    int actualSecondCardBalance = dashboardPage.getCardBalance("2");
+    int actualFirstCardBalance = dashboardPage.getCardBalance("1") + transferAmount;
+    int actualSecondCardBalance = dashboardPage.getCardBalance("2") - transferAmount;
 
     Assertions.assertEquals(originalFirstCardBalance, actualFirstCardBalance);
     Assertions.assertEquals(originalSecondCardBalance, actualSecondCardBalance);
